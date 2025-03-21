@@ -35,12 +35,19 @@
             {{ form_widget(form.actual_result) }}
             {{ form_errors(form.actual_result) }}
         </div>
+        
+        <div>
+            {{ form_label(form.observations, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.observations) }}
+            {{ form_errors(form.observations) }}
+        </div>
 
         <div>
             {{ form_label(form.status, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
             {{ form_widget(form.status) }}
             {{ form_errors(form.status) }}
         </div>
+
         {{ form_row(form._token) }}
         <div class="mt-6 flex justify-end">
             <div class="flex gap-2">

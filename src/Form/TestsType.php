@@ -39,6 +39,11 @@ class TestsType extends AbstractType
                 'label' => 'Résultat actuel',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
+            ->add('observations', TextareaType::class, [
+                'label' => 'Observations',
+                'required' => false,
+                'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
+            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'Statut',
                 'choices' => [

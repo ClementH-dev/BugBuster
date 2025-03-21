@@ -20,6 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->tests = new ArrayCollection();
+        $this->updateTest = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -53,6 +54,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Tests::class, mappedBy: 'CreatedBy')]
     private Collection $tests;
+
+    /**
+     * @var Collection<int, Tests>
+     */
+    #[ORM\OneToMany(targetEntity: Tests::class, mappedBy: 'updatedBy')]
+    private Collection $updateTest;
 
     public function getId(): ?int
     {
@@ -181,5 +188,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Tests>
+     */
+    public function getUpdateTest(): Collection
+    {
+        return $this->updateTest;
+    }
+
+    public function addUpdateTest(Tests $updateTest): static
+    {
+        if (!$this->updateTest->contains($updateTest)) {
+            $this->updateTest->add($updateTest);
+            $updateTest->setUpdatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUpdateTest(Tests $updateTest): static
+    {
+        if ($this->updateTest->removeElement($updateTest)) {
+            // set the owning side to null (unless already changed)
+            if ($updateTest->getUpdatedBy() === $this) {
+                $updateTest->setUpdatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        // TODO Changer par un nom prénom
+        return $this->getEmail(); // Remplacez par la propriété qui représente le nom de l'utilisateur
     }
 }

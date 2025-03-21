@@ -56,12 +56,16 @@ final class TestsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_tests_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Tests $test, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Tests $test, EntityManagerInterface $entityManager, Security $security): Response
     {
         $form = $this->createForm(TestsType::class, $test);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+              // Assigner l'utilisateur connecté comme créateur du test
+              $test->setUpdatedBy($security->getUser());
+              $test->setUpdatedAt(new \DateTimeImmutable());
+  
             $entityManager->flush();
 
             return $this->redirectToRoute('app_tests_index', [], Response::HTTP_SEE_OTHER);

@@ -53,6 +53,18 @@
                         <th class="p-4 text-left text-gray-700">Créé le</th>
                         <td class="p-4">{{ test.createdAt ? test.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     </tr>
+                    <tr>
+                        <th class="p-4 text-left text-gray-700">Mis à jour le</th>
+                        <td class="p-4">{{ test.updatedAt? test.updatedAt|date('Y-m-d H:i:s') : 'Pas encore mis à jour' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="p-4 text-left text-gray-700">Créé par</th>
+                        <td class="p-4">{{ test.createdBy }}</td>
+                    </tr>
+                    <tr>
+                        <th class="p-4 text-left text-gray-700">Mis à jour par</th>
+                        <td class="p-4">{{ test.updatedBy? test.updatedAt : 'Pas encore mis à jour' }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

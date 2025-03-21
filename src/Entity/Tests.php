@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TestsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,27 @@ class Tests
 
     #[ORM\ManyToOne(inversedBy: 'tests')]
     private ?User $CreatedBy = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'updateTest')]
+    private ?User $updatedBy = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observations = null;
+
+    /**
+     * @var Collection<int, PvRecettage>
+     */
+    #[ORM\ManyToMany(targetEntity: PvRecettage::class, mappedBy: 'tests')]
+    private Collection $pvRecettages;
+
+    public function __construct()
+    {
+        $this->pvRecettages = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -150,6 +173,69 @@ class Tests
     public function setCreatedBy(?User $CreatedBy): static
     {
         $this->CreatedBy = $CreatedBy;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?User $updatedBy): static
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getObservations(): ?string
+    {
+        return $this->observations;
+    }
+
+    public function setObservations(?string $observations): static
+    {
+        $this->observations = $observations;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PvRecettage>
+     */
+    public function getPvRecettages(): Collection
+    {
+        return $this->pvRecettages;
+    }
+
+    public function addPvRecettage(PvRecettage $pvRecettage): static
+    {
+        if (!$this->pvRecettages->contains($pvRecettage)) {
+            $this->pvRecettages->add($pvRecettage);
+            $pvRecettage->addTest($this);
+        }
+
+        return $this;
+    }
+
+    public function removePvRecettage(PvRecettage $pvRecettage): static
+    {
+        if ($this->pvRecettages->removeElement($pvRecettage)) {
+            $pvRecettage->removeTest($this);
+        }
 
         return $this;
     }
