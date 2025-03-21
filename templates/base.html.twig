@@ -6,13 +6,82 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+            <style>
+                /* Optimisation visuelle rechargement select2 */
+                .select2-multiple {
+                    visibility: hidden;
+                    height: 0;
+                    overflow: hidden;
+                }
+                .select2-hidden-accessible {
+                    visibility: visible;
+                }
+            </style>
         {% endblock %}
-
         {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <script>
+                // Variable pour éviter les initialisations multiples
+                var select2Initialized = false;
+                
+                function initSelect2() {
+                // Vérifier si les éléments existent
+                if ($('.select2-multiple').length > 0) {
+                    // Vérifier si nous sommes en mode édition (URL contient /edit)
+                    var isEditMode = window.location.href.indexOf('/edit') > -1;
+                    
+                    try {
+                        if ($('.select2-multiple').hasClass('select2-hidden-accessible')) {
+                            $('.select2-multiple').select2('destroy');
+                        }
+                    } catch (e) {
+                        console.log("Select2 n'était pas encore initialisé");
+                    }
+                    
+                    // Configuration spécifique pour le mode édition
+                    var config = {
+                        placeholder: "Sélectionner des tests",
+                        allowClear: true,
+                        width: '100%'
+                    };
+                    
+                    // Laisser un court délai en mode édition pour que Symfony charge les valeurs
+                    if (isEditMode) {
+                        setTimeout(function() {
+                            $('.select2-multiple').select2(config);
+                            // Déclencher un événement change pour s'assurer que Select2 reflète les sélections
+                            $('.select2-multiple').trigger('change');
+                        }, 100);
+                    } else {
+                        $('.select2-multiple').select2(config);
+                    }
+                }
+            }
+                
+                // Exécuter le plus tôt possible
+                $(function() {
+                    initSelect2();
+                });
+            </script>
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% endblock %}
     </body>
+    {% block page_javascripts %}
+        <script>
+            $(function() {
+                // UEvite l'affichage multiple
+                setTimeout(function() {
+                    if (typeof initSelect2 === 'function') {
+                        initSelect2();
+                    }
+                }, 10);
+            });
+        </script>
+    {% endblock %}
 </html>

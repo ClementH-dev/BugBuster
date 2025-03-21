@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PvRecettage{% endblock %}
+
+{% block body %}
+    <h1>PvRecettage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pv_recettage.id }}</td>
+            </tr>
+            <tr>
+                <th>Pdf_url</th>
+                <td>{{ pv_recettage.pdfUrl }}</td>
+            </tr>
+            <tr>
+                <th>Version</th>
+                <td>{{ pv_recettage.version }}</td>
+            </tr>
+            <tr>
+                <th>GeneratedAt</th>
+                <td>{{ pv_recettage.generatedAt ? pv_recettage.generatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TechnicalEnvironment</th>
+                <td>{{ pv_recettage.technicalEnvironment }}</td>
+            </tr>
+            <tr>
+                <th>CriticalPoints</th>
+                <td>{{ pv_recettage.criticalPoints }}</td>
+            </tr>
+            <tr>
+                <th>Consequences</th>
+                <td>{{ pv_recettage.consequences }}</td>
+            </tr>
+            <tr>
+                <th>ActionPlan</th>
+                <td>{{ pv_recettage.actionPlan }}</td>
+            </tr>
+            <tr>
+                <th>Conlusion</th>
+                <td>{{ pv_recettage.conlusion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_pv_recettage_index') }}">back to list</a>
+
+    <a href="{{ path('app_pv_recettage_edit', {'id': pv_recettage.id}) }}">edit</a>
+
+{% endblock %}

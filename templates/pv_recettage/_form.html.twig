@@ -1,0 +1,52 @@
+{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+    <div>
+        {{ form_label(form.name, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div>
+        {{ form_label(form.technicalEnvironment, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.technicalEnvironment) }}
+        {{ form_errors(form.technicalEnvironment) }}
+    </div>
+
+    <div>
+        {{ form_label(form.criticalPoints, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.criticalPoints) }}
+        {{ form_errors(form.criticalPoints) }}
+    </div>
+
+    <div>
+        {{ form_label(form.consequences, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.consequences) }}
+        {{ form_errors(form.consequences) }}
+    </div>
+
+    <div>
+        {{ form_label(form.actionPlan, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.actionPlan) }}
+        {{ form_errors(form.actionPlan) }}
+    </div>
+
+    <div>
+        {{ form_label(form.conlusion, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.conlusion) }}
+        {{ form_errors(form.conlusion) }}
+    </div>
+
+    {# Sélection des tests avec recherche #}
+    <div>
+        {{ form_label(form.tests, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+        {{ form_widget(form.tests, {'attr': {'class': 'select2-multiple w-full'}}) }}
+        {{ form_errors(form.tests) }}
+    </div>
+    
+    {{ form_row(form._token) }}
+    <div class="mt-6 flex justify-end">
+            <div class="flex gap-2">
+                <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">{{ button_label|default('Créer le PV') }}</button>
+            </div>
+        </div>
+{{ form_end(form) }}

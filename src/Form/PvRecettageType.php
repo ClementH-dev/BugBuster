@@ -2,70 +2,70 @@
 
 namespace App\Form;
 
+use App\Entity\PvRecettage;
 use App\Entity\Tests;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TestsType extends AbstractType
+class PvRecettageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du test',
+                'label' => 'Nom',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
+            ->add('technicalEnvironment', TextareaType::class, [
+                'label' => 'Environnement technique',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('steps', TextareaType::class, [
-                'label' => 'Étapes à suivre',
+            ->add('criticalPoints', TextareaType::class, [
+                'label' => 'Points critiques',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('acceptance_criteria', TextareaType::class, [
-                'label' => 'Critères d’acceptation',
+            ->add('consequences', TextareaType::class, [
+                'label' => 'Conséquences',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('excected_result', TextareaType::class, [
-                'label' => 'Résultat attendu',
+            ->add('actionPlan', TextareaType::class, [
+                'label' => 'Plan d’action',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('actual_result', TextareaType::class, [
-                'label' => 'Résultat actuel',
+            ->add('conlusion', TextareaType::class, [
+                'label' => 'Conclusion',
                 'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
             ])
-            ->add('observations', TextareaType::class, [
-                'label' => 'Observations',
-                'required' => false,
-                'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
-            ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Statut',
-                'choices' => [
-                    'En cours' => 'en_cours',
-                    'Réussi' => 'reussi',
-                    'Échoué' => 'echoue',
-                ],
+            ->add('tests', EntityType::class, [
+                'class' => Tests::class,
+                'choice_label' => 'name',
+                'multiple' => true,
                 'expanded' => false,
-                'multiple' => false,
-                'attr' => ['class' => 'w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('t')
+                        ->orderBy('t.name', 'ASC');
+                },
+                'attr' => [
+                    'class' => 'select2-multiple w-full',
+                    'data-placeholder' => 'Rechercher des tests...',
+                ],
+                'by_reference' => false,
             ])
             ->add('_token', HiddenType::class, [
                 'mapped' => false,
-            ]);;
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Tests::class,
+            'data_class' => PvRecettage::class,
         ]);
     }
 }

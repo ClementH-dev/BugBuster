@@ -16,6 +16,18 @@ class PvRecettageRepository extends ServiceEntityRepository
         parent::__construct($registry, PvRecettage::class);
     }
 
+    public function findExistingVersion(PvRecettage $pvRecettage): ?PvRecettage
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.pvRecettages', 'prev')
+            ->where('prev.id = :pvId')
+            ->setParameter('pvId', $pvRecettage->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 //    /**
 //     * @return PvRecettage[] Returns an array of PvRecettage objects
 //     */
