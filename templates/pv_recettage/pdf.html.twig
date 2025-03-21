@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 100%; padding: 20px; }
+        h1 { text-align: center; }
+        .section { margin-bottom: 20px; }
+        .section h2 { border-bottom: 1px solid #000; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PV Recettage - {{ pv.name }}</h1>
+
+        <div class="section">
+            <h2>Environnement technique</h2>
+            <p>{{ pv.technicalEnvironment }}</p>
+        </div>
+        <div class="section">
+            <h2>Points critiques</h2>
+            <p>{{ pv.criticalPoints }}</p>
+        </div>
+        <div class="section">
+            <h2>Conséquences</h2>
+            <p>{{ pv.consequences }}</p>
+        </div>
+        <div class="section">
+            <h2>Plan d’action</h2>
+            <p>{{ pv.actionPlan }}</p>
+        </div>
+        <div class="section">
+            <h2>Conclusion</h2>
+            <p>{{ pv.conlusion }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Tests associés</h2>
+            <table>
+                <thead>
+                   <tr class="bg-gray-100">
+                        <th class="p-4 text-left text-gray-700">Nom</th>
+                        <th class="p-4 text-left text-gray-700">Statut</th>
+                        <th class="p-4 text-left text-gray-700">Créé le</th>
+                        <th class="p-4 text-left text-gray-700">Etapes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for test in pv.tests %}
+                    <tr>
+                        <td class="p-4">{{ test.name }}</td>
+                        <td class="p-4">
+                            {% if test.status == 'en_cours' %}
+                                <span class="px-3 py-1 text-orange-700 bg-orange-100 border border-orange-500 rounded-lg whitespace-nowrap">En cours</span>
+                            {% elseif test.status == 'reussi' %}
+                                <span class="px-3 py-1 text-green-700 bg-green-100 border border-green-500 rounded-lg">Réussi</span>
+                            {% elseif test.status == 'echoue' %}
+                                <span class="px-3 py-1 text-red-700 bg-red-100 border border-red-500 rounded-lg">Échoué</span>
+                            {% endif %}
+                        </td>
+                        <td class="p-4">{{ test.createdAt ? test.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td class="p-4">{{ test.steps }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">Aucun test associé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

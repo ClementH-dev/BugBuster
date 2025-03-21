@@ -27,11 +27,11 @@
                         <td class="p-4">{{ test.name }}</td>
                         <td class="p-4">
                             {% if test.status == 'en_cours' %}
-                                <span class="px-3 py-1 text-orange-700 bg-orange-100 border border-orange-500 rounded-lg whitespace-nowrap">En cours</span>
+                                <span class="px-3 py-1 text-orange-700 bg-orange-100 border border-orange-500 rounded-lg whitespace-nowrap">En cours ⌚</span>
                             {% elseif test.status == 'reussi' %}
-                                <span class="px-3 py-1 text-green-700 bg-green-100 border border-green-500 rounded-lg">Réussi</span>
+                                <span class="px-3 py-1 text-green-700 bg-green-100 border border-green-500 rounded-lg">Réussi ✔️</span>
                             {% elseif test.status == 'echoue' %}
-                                <span class="px-3 py-1 text-red-700 bg-red-100 border border-red-500 rounded-lg">Échoué</span>
+                                <span class="px-3 py-1 text-red-700 bg-red-100 border border-red-500 rounded-lg">Échoué ❌</span>
                             {% endif %}
                         </td>
                         <td class="p-4">{{ test.createdAt ? test.createdAt|date('Y-m-d H:i:s') : '' }}</td>

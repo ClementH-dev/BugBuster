@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\PvRecettage;
 use App\Form\PvRecettageType;
 use App\Repository\PvRecettageRepository;
+use App\Service\PdfGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,7 @@ final class PvRecettageController extends AbstractController
     }
 
     #[Route('/new', name: 'app_pv_recettage_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, PdfGenerator $pdfGenerator): Response
     {
         $pvRecettage = new PvRecettage();
         $form = $this->createForm(PvRecettageType::class, $pvRecettage);
@@ -43,6 +44,15 @@ final class PvRecettageController extends AbstractController
             $pvRecettage->setGeneratedAt(new \DateTimeImmutable());
             $entityManager->persist($pvRecettage);
             $entityManager->flush();
+            $lastId = $pvRecettage->getId();
+
+            $pdfPath = $pdfGenerator->generatePdf('pv_recettage/pdf.html.twig', [
+                'pv' => $pvRecettage
+            ], 'pv_recettage_' . $lastId. '.pdf');
+            $pvRecettage->setPdfUrl('/pdfs/pv_recettage_' . $lastId . '.pdf');
+ 
+             $entityManager->persist($pvRecettage);
+             $entityManager->flush();
 
             return $this->redirectToRoute('app_pv_recettage_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -62,7 +72,7 @@ final class PvRecettageController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_pv_recettage_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, PvRecettage $pvRecettage, EntityManagerInterface $entityManager, PvRecettageRepository $pvRecettageRepository): Response
+    public function edit(Request $request, PvRecettage $pvRecettage, EntityManagerInterface $entityManager, PvRecettageRepository $pvRecettageRepository, PdfGenerator $pdfGenerator): Response
     {
         // Vérifier si un PV existe déjà avec cet ancêtre
         $existingPv = $pvRecettageRepository->findExistingVersion($pvRecettage);
@@ -92,6 +102,16 @@ final class PvRecettageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($newPv);
+            $entityManager->flush();
+           $lastId = $newPv->getId();
+            // Générer le PDF
+           $pdfPath = $pdfGenerator->generatePdf('pv_recettage/pdf.html.twig', [
+               'pv' => $newPv
+           ], 'pv_recettage_' . $lastId . '.pdf');
+           $newPv->setPdfUrl('/pdfs/pv_recettage_' . $lastId . '.pdf');
+
+
             $entityManager->persist($newPv);
             $entityManager->flush();
 

@@ -66,6 +66,7 @@ class TestsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tests::class,
+            'csrf_protection' => true,
         ]);
     }
 }

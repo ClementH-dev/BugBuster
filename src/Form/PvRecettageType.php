@@ -66,6 +66,7 @@ class PvRecettageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PvRecettage::class,
+            'csrf_protection' => true,
         ]);
     }
 }

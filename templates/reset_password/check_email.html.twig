@@ -1,11 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Password Reset Email Sent{% endblock %}
+{% block title %}Password Reset Email Sent | BugBuster{% endblock %}
 
 {% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-semibold text-gray-800">Password Reset</h1>
+                <p class="text-gray-500">We’ve sent a password reset link to your email</p>
+            </div>
+            
+            <div class="space-y-4">
+                <p class="text-sm text-gray-700">
+                    If an account matching your email exists, then an email was just sent that contains a link you can use to reset your password.
+                    This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                </p>
+                <p class="text-sm text-gray-700">
+                    If you don't receive an email, please check your spam folder or <a href="{{ path('app_forgot_password_request') }}" class="text-blue-500 hover:underline">try again</a>.
+                </p>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="{{ path('app_login') }}" class="text-blue-500 hover:underline">Back to login</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

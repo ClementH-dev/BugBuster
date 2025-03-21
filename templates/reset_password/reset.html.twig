@@ -1,12 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Reset your password | BugBuster{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-semibold text-gray-800">Reset Your Password</h1>
+                <p class="text-gray-500">Please enter a new password below to reset it.</p>
+            </div>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+            {# Affichage des erreurs de flash si présentes #}
+            {% for flash_error in app.flashes('reset_password_error') %}
+                <div class="p-3 text-sm text-red-600 bg-red-100 rounded-md mb-4">
+                    {{ flash_error }}
+                </div>
+            {% endfor %}
+
+            {# Démarrer le formulaire avec Tailwind CSS #}
+            {{ form_start(resetForm) }}
+            
+            <div class="mb-4">
+                {{ form_label(resetForm.plainPassword.first, 'New Password', {'class': 'block text-sm font-medium text-gray-700'}) }}
+                {{ form_widget(resetForm.plainPassword.first, {'attr': {'class': 'w-full px-4 py-2 mt-1 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}}) }}
+                {{ form_errors(resetForm.plainPassword.first) }}
+            </div>
+
+            <div class="mb-4">
+                {{ form_label(resetForm.plainPassword.second, 'Repeat Password', {'class': 'block text-sm font-medium text-gray-700'}) }}
+                {{ form_widget(resetForm.plainPassword.second, {'attr': {'class': 'w-full px-4 py-2 mt-1 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}}) }}
+                {{ form_errors(resetForm.plainPassword.second) }}
+            </div>
+
+            <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                Reset Password
+            </button>
+            
+            {{ form_end(resetForm) }}
+        </div>
+    </div>
 {% endblock %}
