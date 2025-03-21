@@ -1,0 +1,10 @@
+# .symfony.local.yaml
+workers:
+    # ...
+    tailwind:
+        cmd: ['symfony', 'console', 'tailwind:build', '--watch']
+        
+    docker:
+      cmd: ['docker', 'compose', 'up', '-d']
+      
+      

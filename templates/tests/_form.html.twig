@@ -1,0 +1,53 @@
+    {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+        <div>
+            {{ form_label(form.name, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.description, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.steps, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.steps) }}
+            {{ form_errors(form.steps) }}
+        </div>
+
+        <div>
+            {{ form_label(form.acceptance_criteria, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.acceptance_criteria) }}
+            {{ form_errors(form.acceptance_criteria) }}
+        </div>
+
+        <div>
+            {{ form_label(form.excected_result, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.excected_result) }}
+            {{ form_errors(form.excected_result) }}
+        </div>
+
+        <div>
+            {{ form_label(form.actual_result, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.actual_result) }}
+            {{ form_errors(form.actual_result) }}
+        </div>
+
+        <div>
+            {{ form_label(form.status, null, {'class': 'block text-sm font-medium text-gray-700'}) }}
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        </div>
+        {{ form_row(form._token) }}
+        <div class="mt-6 flex justify-end">
+            <div class="flex gap-2">
+                {% if delete_form %}
+                    {{ include('tests/_delete_form.html.twig') }}
+                {% endif %}
+                <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">{{ button_label|default('Créer le test') }}</button>
+            </div>
+        </div>
+    {{ form_end(form) }}

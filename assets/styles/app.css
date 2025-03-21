@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-    background-color: skyblue;
+    background-color: oklch(0.985 0.002 247.839);
 }
